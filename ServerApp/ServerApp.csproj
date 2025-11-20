@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!-- Target framework downgraded to net8.0 so that this console application can reference the WPF project -->
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <!-- Add a reference to the main ShellTotalCommander1 project so we can access ShellTcpServer -->
+  <ItemGroup>
+    <ProjectReference Include="..\ShellTotalCommander1\ShellTotalCommander1.csproj" />
+  </ItemGroup>
+
+</Project>

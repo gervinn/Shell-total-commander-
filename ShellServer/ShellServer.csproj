@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!-- Target framework downgraded to net8.0 for compatibility with the main project -->
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <!-- Reference the main ShellTotalCommander1 project so the server can be used -->
+  <ItemGroup>
+    <ProjectReference Include="..\ShellTotalCommander1\ShellTotalCommander1.csproj" />
+  </ItemGroup>
+
+</Project>
