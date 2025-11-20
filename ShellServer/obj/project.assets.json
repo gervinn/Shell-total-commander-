@@ -348,11 +348,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\germa\\OneDrive\\Рабочий стол\\22\\ShellServer\\ShellServer.csproj",
+      "projectUniqueName": "C:\\Users\\germa\\OneDrive\\Рабочий стол\\2\\ShellServer\\ShellServer.csproj",
       "projectName": "ShellServer",
-      "projectPath": "C:\\Users\\germa\\OneDrive\\Рабочий стол\\22\\ShellServer\\ShellServer.csproj",
+      "projectPath": "C:\\Users\\germa\\OneDrive\\Рабочий стол\\2\\ShellServer\\ShellServer.csproj",
       "packagesPath": "C:\\Users\\germa\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\germa\\OneDrive\\Рабочий стол\\22\\ShellServer\\obj\\",
+      "outputPath": "C:\\Users\\germa\\OneDrive\\Рабочий стол\\2\\ShellServer\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\germa\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -367,8 +367,8 @@
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows",
           "projectReferences": {
-            "C:\\Users\\germa\\OneDrive\\Рабочий стол\\22\\ShellTotalCommander1\\ShellTotalCommander1.csproj": {
-              "projectPath": "C:\\Users\\germa\\OneDrive\\Рабочий стол\\22\\ShellTotalCommander1\\ShellTotalCommander1.csproj"
+            "C:\\Users\\germa\\OneDrive\\Рабочий стол\\2\\ShellTotalCommander1\\ShellTotalCommander1.csproj": {
+              "projectPath": "C:\\Users\\germa\\OneDrive\\Рабочий стол\\2\\ShellTotalCommander1\\ShellTotalCommander1.csproj"
             }
           }
         }

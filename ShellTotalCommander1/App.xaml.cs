@@ -20,33 +20,8 @@ namespace ShellTotalCommander1
         /// <param name="e">Startup arguments.</param>
         protected override void OnStartup(StartupEventArgs e)
         {
+            // Simply call base startup. No server availability check is performed here.
             base.OnStartup(e);
-
-            // Try to detect whether the TCP server is running. If the connection fails,
-            // notify the user but do not shut down the application; the client can
-            // operate in local mode. Keep the timeout short to avoid a long delay.
-            bool serverAvailable = false;
-            using (var client = new TcpClient())
-            {
-                try
-                {
-                    var connectTask = client.ConnectAsync("localhost", 9000);
-                    serverAvailable = connectTask.Wait(500) && client.Connected;
-                }
-                catch
-                {
-                    serverAvailable = false;
-                }
-            }
-            if (!serverAvailable)
-            {
-                MessageBox.Show(
-                    "Сервер недоступний. Оболонка працюватиме локально, поки сервер не буде запущено.",
-                    "Сервер недоступний",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-            }
-            // If server is available, no message is shown and the main window loads as usual.
         }
     }
 }

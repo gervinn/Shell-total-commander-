@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zO8/MVJektQ=",
+  "dgSpecHash": "oJShbzfnAJA=",
   "success": true,
-  "projectFilePath": "C:\\Users\\germa\\OneDrive\\Рабочий стол\\22\\ShellServer\\ShellServer.csproj",
+  "projectFilePath": "C:\\Users\\germa\\OneDrive\\Рабочий стол\\2\\ShellServer\\ShellServer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\germa\\.nuget\\packages\\microsoft.data.sqlite\\8.0.0\\microsoft.data.sqlite.8.0.0.nupkg.sha512",
     "C:\\Users\\germa\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.0\\microsoft.data.sqlite.core.8.0.0.nupkg.sha512",
