@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ShellTotalCommander1")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+85f26ea63d2e0dfd6dca7f8c5924de9a710b17fa")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3753d5d836bab2e85bccd98f229e641503dbcf99")]
 [assembly: System.Reflection.AssemblyProductAttribute("ShellTotalCommander1")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ShellTotalCommander1")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
