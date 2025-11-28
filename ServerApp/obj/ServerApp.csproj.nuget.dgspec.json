@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\germa\\OneDrive\\Рабочий стол\\23\\ServerApp\\ServerApp.csproj": {}
+    "C:\\shell\\ServerApp\\ServerApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\germa\\OneDrive\\Рабочий стол\\23\\ServerApp\\ServerApp.csproj": {
+    "C:\\shell\\ServerApp\\ServerApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\germa\\OneDrive\\Рабочий стол\\23\\ServerApp\\ServerApp.csproj",
+        "projectUniqueName": "C:\\shell\\ServerApp\\ServerApp.csproj",
         "projectName": "ServerApp",
-        "projectPath": "C:\\Users\\germa\\OneDrive\\Рабочий стол\\23\\ServerApp\\ServerApp.csproj",
+        "projectPath": "C:\\shell\\ServerApp\\ServerApp.csproj",
         "packagesPath": "C:\\Users\\germa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\germa\\OneDrive\\Рабочий стол\\23\\ServerApp\\obj\\",
+        "outputPath": "C:\\shell\\ServerApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\germa\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -26,8 +26,8 @@
           "net8.0-windows7.0": {
             "targetAlias": "net8.0-windows",
             "projectReferences": {
-              "C:\\Users\\germa\\OneDrive\\Рабочий стол\\23\\ShellTotalCommander1\\ShellTotalCommander1.csproj": {
-                "projectPath": "C:\\Users\\germa\\OneDrive\\Рабочий стол\\23\\ShellTotalCommander1\\ShellTotalCommander1.csproj"
+              "C:\\shell\\ShellTotalCommander1\\ShellTotalCommander1.csproj": {
+                "projectPath": "C:\\shell\\ShellTotalCommander1\\ShellTotalCommander1.csproj"
               }
             }
           }
@@ -67,14 +67,14 @@
         }
       }
     },
-    "C:\\Users\\germa\\OneDrive\\Рабочий стол\\23\\ShellTotalCommander1\\ShellTotalCommander1.csproj": {
+    "C:\\shell\\ShellTotalCommander1\\ShellTotalCommander1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\germa\\OneDrive\\Рабочий стол\\23\\ShellTotalCommander1\\ShellTotalCommander1.csproj",
+        "projectUniqueName": "C:\\shell\\ShellTotalCommander1\\ShellTotalCommander1.csproj",
         "projectName": "ShellTotalCommander1",
-        "projectPath": "C:\\Users\\germa\\OneDrive\\Рабочий стол\\23\\ShellTotalCommander1\\ShellTotalCommander1.csproj",
+        "projectPath": "C:\\shell\\ShellTotalCommander1\\ShellTotalCommander1.csproj",
         "packagesPath": "C:\\Users\\germa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\germa\\OneDrive\\Рабочий стол\\23\\ShellTotalCommander1\\obj\\",
+        "outputPath": "C:\\shell\\ShellTotalCommander1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\germa\\AppData\\Roaming\\NuGet\\NuGet.Config"

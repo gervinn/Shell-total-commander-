@@ -3,7 +3,7 @@ using ShellTotalCommander1.Shell.Interpreter;
 
 namespace ShellTotalCommander1.Shell.States;
 
-public sealed class BrowsingState : IShellState
+public sealed class BrowsingState : ShellState
 {
     public CommandResult HandleCommand(ShellContext context, ParsedCommand command)
     {
