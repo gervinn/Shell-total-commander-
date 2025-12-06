@@ -4,39 +4,50 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Total Commander Shell" Height="600" Width="1000"
+        Title="Total Commander Shell" Height="500" Width="900"
         Loaded="Window_Loaded"
         Background="#1e1e1e">
     <Grid Margin="12">
+        <!-- Define rows: breadcrumbs, command row, status row, items list -->
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <!-- Define columns: command text, execute, up, back -->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
+
+        <!-- Breadcrumb navigation panel. Each part of the current path is rendered
+             as a button and populated in code-behind via UpdateBreadcrumbs(). -->
+        <StackPanel x:Name="PathPanel"
+                    Grid.Row="0"
+                    Grid.ColumnSpan="4"
+                    Orientation="Horizontal"
+                    Margin="0,0,0,8" />
 
         <!-- Command input textbox -->
         <TextBox x:Name="CommandTextBox"
-                 Grid.Row="0"
+                 Grid.Row="1"
                  Grid.Column="0"
                  Margin="0,0,8,0"
                  Height="32"
                  VerticalContentAlignment="Center"
                  FontSize="14"
                  KeyDown="CommandTextBox_KeyDown"
-                 ToolTip="Enter a shell command (e.g. ls, cd, move)"
+                 ToolTip="Enter a shell command (e.g. ls, cd, copy)"
                  Background="#333333"
                  Foreground="White"
                  BorderBrush="#555555" />
 
         <!-- Execute button -->
         <Button x:Name="ExecuteButton"
-                Grid.Row="0"
+                Grid.Row="1"
                 Grid.Column="1"
                 Content="Execute"
                 Height="32"
@@ -47,127 +58,66 @@
                 BorderBrush="#666666"
                 Margin="0,0,8,0" />
 
-        <!-- Up button uses active panel -->
+        <!-- Up button to navigate to the parent directory -->
         <Button x:Name="UpButton"
-                Grid.Row="0"
+                Grid.Row="1"
                 Grid.Column="2"
                 Content="↑"
                 Height="32"
                 Width="32"
                 Click="UpButton_Click"
-                ToolTip="Go to parent directory (active panel)"
+                ToolTip="Go to parent directory"
                 Background="#444444"
                 Foreground="White"
                 BorderBrush="#666666"
                 Margin="0,0,8,0" />
 
-        <!-- Back button uses active panel -->
+        <!-- Back button to return to the previous directory -->
         <Button x:Name="BackButton"
-                Grid.Row="0"
+                Grid.Row="1"
                 Grid.Column="3"
                 Content="←"
                 Height="32"
                 Width="32"
                 Click="BackButton_Click"
-                ToolTip="Go back to previous directory (active panel)"
+                ToolTip="Go back to previous directory"
                 Background="#444444"
                 Foreground="White"
                 BorderBrush="#666666" />
 
         <!-- Status text showing command results -->
         <TextBlock x:Name="StatusTextBlock"
-                   Grid.Row="1"
+                   Grid.Row="2"
                    Grid.ColumnSpan="4"
                    Margin="0,10,0,10"
                    TextWrapping="Wrap"
                    Foreground="LightGreen" />
 
-        <!-- Two panels side by side -->
-        <Grid Grid.Row="2"
-              Grid.ColumnSpan="4"
-              Margin="0,4,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <!-- LEFT PANEL -->
-            <Border x:Name="LeftPanelBorder"
-                    Grid.Column="0"
-                    Margin="0,0,4,0"
-                    BorderBrush="#666666"
-                    BorderThickness="1"
-                    CornerRadius="4"
-                    Background="#262626">
-                <DockPanel>
-                    <TextBlock x:Name="LeftPathTextBlock"
-                               DockPanel.Dock="Top"
-                               Margin="4"
-                               FontWeight="Bold"
-                               Foreground="LightGray" />
-                    <ListView x:Name="ItemsListViewLeft"
-                              Margin="2"
-                              Background="#262626"
-                              Foreground="White"
-                              BorderThickness="0"
-                              MouseDoubleClick="ItemsListView_MouseDoubleClick">
-                        <ListView.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Видалити" Click="DeleteItem_Click" />
-                                <MenuItem Header="Перейменувати" Click="RenameItem_Click" />
-                            </ContextMenu>
-                        </ListView.ContextMenu>
-                        <ListView.View>
-                            <GridView AllowsColumnReorder="True">
-                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="200" />
-                                <GridViewColumn Header="Path" DisplayMemberBinding="{Binding FullPath}" Width="280" />
-                                <GridViewColumn Header="Dir" DisplayMemberBinding="{Binding IsDirectory}" Width="60" />
-                                <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Size}" Width="80" />
-                                <GridViewColumn Header="Modified" DisplayMemberBinding="{Binding Modified}" Width="140" />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </DockPanel>
-            </Border>
-
-            <!-- RIGHT PANEL -->
-            <Border x:Name="RightPanelBorder"
-                    Grid.Column="1"
-                    Margin="4,0,0,0"
-                    BorderBrush="#666666"
-                    BorderThickness="1"
-                    CornerRadius="4"
-                    Background="#262626">
-                <DockPanel>
-                    <TextBlock x:Name="RightPathTextBlock"
-                               DockPanel.Dock="Top"
-                               Margin="4"
-                               FontWeight="Bold"
-                               Foreground="LightGray" />
-                    <ListView x:Name="ItemsListViewRight"
-                              Margin="2"
-                              Background="#262626"
-                              Foreground="White"
-                              BorderThickness="0"
-                              MouseDoubleClick="ItemsListView_MouseDoubleClick">
-                        <ListView.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Видалити" Click="DeleteItem_Click" />
-                                <MenuItem Header="Перейменувати" Click="RenameItem_Click" />
-                            </ContextMenu>
-                        </ListView.ContextMenu>
-                        <ListView.View>
-                            <GridView AllowsColumnReorder="True">
-                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="200" />
-                                <GridViewColumn Header="Path" DisplayMemberBinding="{Binding FullPath}" Width="280" />
-                                <GridViewColumn Header="Dir" DisplayMemberBinding="{Binding IsDirectory}" Width="60" />
-                                <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Size}" Width="80" />
-                                <GridViewColumn Header="Modified" DisplayMemberBinding="{Binding Modified}" Width="140" />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </DockPanel>
-            </Border>
-        </Grid>
+        <!-- Items list displaying files and directories. Includes a context menu with
+             delete and rename commands, and handles double-clicks in code-behind. -->
+        <ListView x:Name="ItemsListView"
+                  Grid.Row="3"
+                  Grid.ColumnSpan="4"
+                  BorderBrush="#666666"
+                  BorderThickness="1"
+                  Background="#262626"
+                  Foreground="White"
+                  MouseDoubleClick="ItemsListView_MouseDoubleClick">
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Видалити" Click="DeleteItem_Click" />
+                    <MenuItem Header="Перейменувати" Click="RenameItem_Click" />
+                </ContextMenu>
+            </ListView.ContextMenu>
+            <ListView.View>
+                <GridView AllowsColumnReorder="True">
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="200" />
+                    <GridViewColumn Header="Path" DisplayMemberBinding="{Binding FullPath}" Width="350" />
+                    <GridViewColumn Header="Directory" DisplayMemberBinding="{Binding IsDirectory}" Width="80" />
+                    <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Size}" Width="100" />
+                    <GridViewColumn Header="Modified" DisplayMemberBinding="{Binding Modified}" Width="150" />
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>

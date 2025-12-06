@@ -7,6 +7,9 @@ using ShellTotalCommander1.Shell.Prototype;
 
 namespace ShellTotalCommander1.Shell.Commands;
 
+/// <summary>
+/// Base class for commands implementing template method behavior.
+/// </summary>
 public abstract class ShellCommandBase : IShellCommand, ICommandPrototype
 {
     public abstract string Name { get; }
@@ -49,6 +52,7 @@ public abstract class ShellCommandBase : IShellCommand, ICommandPrototype
             return Path.GetFullPath(path);
         }
 
+        // Handle drive switching commands like "C:" explicitly.
         if (path.Length == 2 && path[1] == ':' && char.IsLetter(path[0]))
         {
             var driveRoot = Path.GetFullPath(path + Path.DirectorySeparatorChar);

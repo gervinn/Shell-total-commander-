@@ -86,6 +86,7 @@ public sealed class ShellContext
         registry.Register(new DeleteCommand());
         registry.Register(new SearchCommand());
         registry.Register(new DrivesCommand());
+        // Additional command for renaming files and folders.
         registry.Register(new RenameCommand());
         return new CommandFactory(registry);
     }

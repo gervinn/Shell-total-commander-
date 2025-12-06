@@ -45,6 +45,7 @@ public sealed class SearchCommand : ShellCommandBase
             }
             catch (UnauthorizedAccessException)
             {
+                // Skip directories without access rights.
             }
         }
 

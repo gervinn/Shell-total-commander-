@@ -25,6 +25,7 @@ public sealed class ShellServerClient
     // especially when running in debug mode or on slower machines.
     private const int ConnectionTimeoutMs = 2200;
 
+
     public ShellServerClient(string host = "localhost", int port = 9000)
     {
         _host = host;
