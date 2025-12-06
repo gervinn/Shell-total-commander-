@@ -3,9 +3,6 @@ using System.IO;
 
 namespace ShellTotalCommander1.Shell;
 
-/// <summary>
-/// Represents a file or directory entry in the shell.
-/// </summary>
 public sealed class FileItem
 {
     public FileItem(FileSystemInfo info)

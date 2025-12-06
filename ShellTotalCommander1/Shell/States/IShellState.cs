@@ -3,7 +3,7 @@ using ShellTotalCommander1.Shell.Interpreter;
 
 namespace ShellTotalCommander1.Shell.States;
 
-public interface ShellState
+public interface IShellState
 {
     CommandResult HandleCommand(ShellContext context, ParsedCommand command);
 }

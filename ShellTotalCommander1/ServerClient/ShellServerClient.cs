@@ -18,6 +18,14 @@ public sealed class ShellServerClient
     private readonly string _host;
     private readonly int _port;
 
+    // Timeout for connecting and reading in milliseconds. Keeping it small prevents long delays
+    // when the server is unreachable.
+    // Timeout for connecting and reading responses (in milliseconds).
+    // Increased to 500ms to ensure the server has enough time to respond,
+    // especially when running in debug mode or on slower machines.
+    private const int ConnectionTimeoutMs = 2200;
+
+
     public ShellServerClient(string host = "localhost", int port = 9000)
     {
         _host = host;
@@ -42,22 +50,43 @@ public sealed class ShellServerClient
         var json = JsonSerializer.Serialize(request);
 
         using var client = new TcpClient();
+        // Attempt to connect with a timeout. Use Task.WhenAny to avoid awaiting the full timeout when unreachable.
         try
         {
-            await client.ConnectAsync(_host, _port);
+            var connectTask = client.ConnectAsync(_host, _port);
+            var connected = await Task.WhenAny(connectTask, Task.Delay(ConnectionTimeoutMs)) == connectTask;
+            if (!connected || !client.Connected)
+            {
+                return null;
+            }
         }
         catch
         {
             return null;
         }
+
         using var stream = client.GetStream();
         var bytes = Encoding.UTF8.GetBytes(json);
-        await stream.WriteAsync(bytes);
-        var buffer = new byte[8192];
-        int bytesRead;
         try
         {
-            bytesRead = await stream.ReadAsync(buffer);
+            // Write the request. Using offset and length returns a Task instead of ValueTask on old frameworks.
+            await stream.WriteAsync(bytes, 0, bytes.Length);
+        }
+        catch
+        {
+            return null;
+        }
+        var buffer = new byte[8192];
+        int bytesRead = 0;
+        try
+        {
+            var readTask = stream.ReadAsync(buffer, 0, buffer.Length);
+            var readCompleted = await Task.WhenAny(readTask, Task.Delay(ConnectionTimeoutMs));
+            if (readCompleted != readTask)
+            {
+                return null;
+            }
+            bytesRead = readTask.Result;
         }
         catch
         {

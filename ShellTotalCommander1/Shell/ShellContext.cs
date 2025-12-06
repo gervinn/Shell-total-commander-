@@ -11,13 +11,13 @@ namespace ShellTotalCommander1.Shell;
 
 public sealed class ShellContext
 {
-    private ShellState _state;
+    private IShellState _state;
 
     public ShellContext(
         string? startDirectory = null,
         ICommandFactory? commandFactory = null,
         ICommandInterpreter? interpreter = null,
-        ShellState? initialState = null)
+        IShellState? initialState = null)
     {
         var directoryPath = string.IsNullOrWhiteSpace(startDirectory) ? Environment.CurrentDirectory : startDirectory;
         if (!Directory.Exists(directoryPath))
@@ -37,7 +37,7 @@ public sealed class ShellContext
 
     public ICommandInterpreter Interpreter { get; }
 
-    public ShellState CurrentState => _state;
+    public IShellState CurrentState => _state;
 
     public CommandResult Execute(string input)
     {
@@ -57,7 +57,7 @@ public sealed class ShellContext
         }
     }
 
-    public void ChangeState(ShellState state)
+    public void ChangeState(IShellState state)
     {
         _state = state ?? throw new ArgumentNullException(nameof(state));
     }

@@ -20,8 +20,8 @@ public partial class MainWindow : Window
     private readonly DatabaseLogger _logger = new();
     private readonly ShellTotalCommander1.ServerClient.ShellServerClient _serverClient = new();
 
-    // Indicates that previous attempts to connect to the server failed. When true, the
-    // client will temporarily skip remote calls until the retry time has passed.
+    // Indicates that previous attempts to connect to the server failed. When true,
+    // the client will temporarily skip remote calls until the retry time has passed.
     private bool _serverUnavailable;
     private DateTime _serverRetryUntil;
 
@@ -157,6 +157,7 @@ public partial class MainWindow : Window
         StatusTextBlock.Foreground = result.Success ? Brushes.DarkGreen : Brushes.DarkRed;
         StatusTextBlock.Text = result.Message;
         ItemsListView.ItemsSource = result.Items.ToList();
+        UpdateBreadcrumbs();
         CommandTextBox.SelectAll();
         CommandTextBox.Focus();
     }
@@ -203,6 +204,7 @@ public partial class MainWindow : Window
         {
             ItemsListView.ItemsSource = Array.Empty<object>();
         }
+        UpdateBreadcrumbs();
         CommandTextBox.SelectAll();
         CommandTextBox.Focus();
     }
@@ -214,7 +216,8 @@ public partial class MainWindow : Window
 
     /// <summary>
     /// Handles double-clicking on an item in the list view. If the item is a directory,
-    /// navigates into it by issuing a cd command. If the item is a file, attempts to
+    /// navigates into it by issuing a cd command and then automatically executes
+    /// an ls command to refresh the listing. If the item is a file, attempts to
     /// open it with the default associated application.
     /// </summary>
     private async void ItemsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -239,18 +242,21 @@ public partial class MainWindow : Window
             // Issue a cd command to navigate into the selected directory
             CommandTextBox.Text = $"cd \"{selected.FullPath}\"";
             await ExecuteCurrentCommandAsync();
+            // After navigating, automatically list contents
+            CommandTextBox.Text = "ls";
+            await ExecuteCurrentCommandAsync();
         }
         else
         {
             // Try to open the file using the default program
             try
             {
-                var psi = new System.Diagnostics.ProcessStartInfo
+                var psi = new ProcessStartInfo
                 {
                     FileName = selected.FullPath,
                     UseShellExecute = true
                 };
-                System.Diagnostics.Process.Start(psi);
+                Process.Start(psi);
             }
             catch (Exception ex)
             {
@@ -262,7 +268,7 @@ public partial class MainWindow : Window
 
     /// <summary>
     /// Navigates up to the parent directory. Pushes the current directory onto the
-    /// history stack and issues a cd .. command.
+    /// history stack and issues a cd .. command. Afterwards executes ls to refresh.
     /// </summary>
     private async void UpButton_Click(object sender, RoutedEventArgs e)
     {
@@ -277,10 +283,13 @@ public partial class MainWindow : Window
         }
         CommandTextBox.Text = "cd ..";
         await ExecuteCurrentCommandAsync();
+        CommandTextBox.Text = "ls";
+        await ExecuteCurrentCommandAsync();
     }
 
     /// <summary>
-    /// Goes back to the previously visited directory if available.
+    /// Goes back to the previously visited directory if available. Pops from the history
+    /// and navigates to it, then executes ls.
     /// </summary>
     private async void BackButton_Click(object sender, RoutedEventArgs e)
     {
@@ -292,6 +301,96 @@ public partial class MainWindow : Window
         }
         var previous = _backHistory.Pop();
         CommandTextBox.Text = $"cd \"{previous}\"";
+        await ExecuteCurrentCommandAsync();
+        CommandTextBox.Text = "ls";
+        await ExecuteCurrentCommandAsync();
+    }
+
+    /// <summary>
+    /// Updates the breadcrumb navigation panel based on the current directory.
+    /// Each segment of the path is rendered as a clickable button. Clicking a segment
+    /// navigates to that directory and refreshes the view.
+    /// </summary>
+    private void UpdateBreadcrumbs()
+    {
+        if (PathPanel == null)
+        {
+            return;
+        }
+        PathPanel.Children.Clear();
+        var full = _shellContext.CurrentDirectory.FullName;
+        var parts = full.Split(Path.DirectorySeparatorChar);
+        // Build up cumulative paths. Start with root (e.g. C:\)
+        string accum = parts[0] + Path.DirectorySeparatorChar;
+        for (int i = 0; i < parts.Length; i++)
+        {
+            var btn = new System.Windows.Controls.Button
+            {
+                Content = parts[i],
+                Margin = new Thickness(2),
+                Padding = new Thickness(4),
+                Background = Brushes.Transparent,
+                Foreground = Brushes.White,
+                BorderBrush = Brushes.Gray,
+                Tag = accum
+            };
+            btn.Click += async (_, _) =>
+            {
+                CommandTextBox.Text = $"cd \"{btn.Tag}\"";
+                await ExecuteCurrentCommandAsync();
+                CommandTextBox.Text = "ls";
+                await ExecuteCurrentCommandAsync();
+            };
+            PathPanel.Children.Add(btn);
+            if (i < parts.Length - 1)
+            {
+                accum += parts[i + 1] + Path.DirectorySeparatorChar;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Deletes the selected item via context menu. Executes the del command and then
+    /// refreshes the directory listing.
+    /// </summary>
+    private async void DeleteItem_Click(object sender, RoutedEventArgs e)
+    {
+        if (ItemsListView.SelectedItem is not FileItem item)
+        {
+            return;
+        }
+        CommandTextBox.Text = $"del \"{item.FullPath}\"";
+        await ExecuteCurrentCommandAsync();
+        CommandTextBox.Text = "ls";
+        await ExecuteCurrentCommandAsync();
+    }
+
+    /// <summary>
+    /// Renames the selected item via context menu. Presents a rename dialog to the user,
+    /// executes the rename command, then refreshes the directory listing.
+    /// </summary>
+    private async void RenameItem_Click(object sender, RoutedEventArgs e)
+    {
+        if (ItemsListView.SelectedItem is not FileItem item)
+        {
+            return;
+        }
+        // Show rename dialog with the current name pre-filled. If the user cancels, do nothing.
+        var dialog = new RenameDialog(item.Name);
+        dialog.Owner = this;
+        var result = dialog.ShowDialog();
+        if (result != true)
+        {
+            return;
+        }
+        var newName = dialog.NewName;
+        if (string.IsNullOrWhiteSpace(newName))
+        {
+            return;
+        }
+        CommandTextBox.Text = $"rename \"{item.FullPath}\" \"{newName}\"";
+        await ExecuteCurrentCommandAsync();
+        CommandTextBox.Text = "ls";
         await ExecuteCurrentCommandAsync();
     }
 }
