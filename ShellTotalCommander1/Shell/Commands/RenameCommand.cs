@@ -2,13 +2,6 @@ using System.IO;
 
 namespace ShellTotalCommander1.Shell.Commands;
 
-/// <summary>
-/// Renames a file or directory. Usage: rename &lt;source&gt; &lt;newName&gt;.
-/// This command demonstrates an additional file operation beyond the original
-/// requirements and can be used to rename both files and folders. If the
-/// destination exists it will be overwritten. Relative paths are resolved
-/// against the current directory.
-/// </summary>
 public sealed class RenameCommand : ShellCommandBase
 {
     public override string Name => "rename";
@@ -40,7 +33,6 @@ public sealed class RenameCommand : ShellCommandBase
         {
             if (File.Exists(sourcePath))
             {
-                // Overwrite if destination exists
                 if (File.Exists(destinationPath))
                 {
                     File.Delete(destinationPath);

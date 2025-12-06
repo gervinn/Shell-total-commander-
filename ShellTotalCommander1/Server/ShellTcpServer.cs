@@ -11,11 +11,6 @@ using System.Collections.Generic;
 
 namespace ShellTotalCommander1.Server
 {
-    /// <summary>
-    /// Represents a simple TCP server that accepts JSON-formatted requests,
-    /// executes shell commands using the <see cref="ShellContext"/> and returns JSON responses.
-    /// The server expects a <see cref="CommandRequest"/> object in JSON and responds with a <see cref="CommandResponse"/>.
-    /// </summary>
     public class ShellTcpServer
     {
         private readonly int _port;
@@ -27,9 +22,6 @@ namespace ShellTotalCommander1.Server
             _port = port;
         }
 
-        /// <summary>
-        /// Starts the TCP server and begins accepting client connections.
-        /// </summary>
         public void Start()
         {
             _listener = new TcpListener(IPAddress.Any, _port);
@@ -38,9 +30,6 @@ namespace ShellTotalCommander1.Server
             _ = AcceptClientsAsync();
         }
 
-        /// <summary>
-        /// Stops the TCP server and closes any active listener.
-        /// </summary>
         public void Stop()
         {
             _running = false;
@@ -123,9 +112,6 @@ namespace ShellTotalCommander1.Server
         }
     }
 
-    /// <summary>
-    /// A representation of the incoming request from a TCP client.
-    /// </summary>
     public class CommandRequest
     {
         public string Command { get; set; } = string.Empty;
@@ -133,19 +119,12 @@ namespace ShellTotalCommander1.Server
         public string? CurrentDirectory { get; set; }
     }
 
-    /// <summary>
-    /// A representation of the outgoing response to a TCP client.
-    /// </summary>
     public class CommandResponse
     {
     public bool Success { get; set; }
     public string Message { get; set; } = string.Empty;
     public List<string>? Items { get; set; }
-    /// <summary>
-    /// The server's current working directory after executing the command. This
-    /// allows the client to synchronize its local context with the server. If
-    /// the directory is unchanged or unknown, this value may be null.
-    /// </summary>
+
     public string? CurrentDirectory { get; set; }
     }
 }
